@@ -1,3 +1,4 @@
-ID,Nome,Descrição,Código de Barras,Categoria,Preço de Custo,Preço de Venda,NCM,CST ICMS,CST PIS,CST COFINS
-1,a,a,1.0,Categoria2,2.0,3.4,,,,
-2,aaaaa,dasdasdas,21.0,Revenda,100.5,400.98,,01,01,
+1,,a,1.0,Categoria2,2.0,3.4,,,,
+3,a,1,1.0,Uso e Consumo,10.0,20.0,,,,
+4,a,a1,1.0,Uso e Consumo,10.0,20.0,200000,10,10,10
+5,a,a1,2.0,Ativo Fixo,10.0,20.0,202000,,,
