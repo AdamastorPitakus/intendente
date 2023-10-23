@@ -1,1 +1,3 @@
-ID,Nome,DescriÃ§Ã£o,CÃ³digo de Barras,Categoria,PreÃ§o de Compra,PreÃ§o de Venda,NCM,CST ICMS,CST PIS,CST COFINS
+ID,Nome,Descrição,Código de Barras,Categoria,Preço de Custo,Preço de Venda,NCM,CST ICMS,CST PIS,CST COFINS
+1,a,a,1.0,Categoria2,2.0,3.4,,,,
+2,aaaaa,dasdasdas,21.0,Revenda,100.5,400.98,,01,01,

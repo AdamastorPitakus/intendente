@@ -1,12 +1,17 @@
+#arquivo main_menu_teste.py
+
 import database as db  # Importa database.py como db
 from database import connect_db, close_db, insert_db, select_db, update_db, delete_db
 import logging
+from produto import Produto
 
 # Configuração do logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Lista de produtos para simulação
-produtos = []
+# criação do objeto Produto importado da classe Produto na classe construtor, deverá ser imputado
+# os dados do produto para serem cadastrados no banco de dados
+
+
 
 def main_menu():
     while True:
@@ -36,8 +41,7 @@ def main_menu():
             logging.warning("Opção inválida!")
 
 
-if __name__ == "__main__":
-    main_menu()
+
 
 def gerenciar_produtos():
     while True:
@@ -64,28 +68,53 @@ def gerenciar_produtos():
 
 # Funções do Menu
 
-# Adicionando os novos campos no cadastro de produtos
+def input_somente_letras(prompt):
+    while True:
+        data = input(prompt)
+        if data.isalpha():
+            return data
+        else:
+            print("Por favor, insira apenas letras.")
+
+def input_somente_numeros(prompt):
+    while True:
+        data = input(prompt)
+        if data.replace(".", "").replace(",", "").isdigit():
+            return float(data.replace(",", "."))
+        else:
+            print("Por favor, insira apenas números.")
+
+def escolher_categoria():
+    categorias = ["Uso e Consumo", "Ativo Fixo", "Revenda", "Utilização na Prestação de Serviço"]
+    for idx, categoria in enumerate(categorias, 1):
+        print(f"{idx}. {categoria}")
+    while True:
+        escolha = input("Escolha uma categoria: ")
+        if escolha.isdigit() and 1 <= int(escolha) <= len(categorias):
+            return categorias[int(escolha) - 1]
+        else:
+            print("Opção inválida. Tente novamente.")
+
 def cadastrar_produto():
-    print("\n--- Cadastrar Produto ---")
-    nome = input("Nome do Produto: ")
+    nome = input_somente_letras("Nome do Produto: ")
     descricao = input("Descrição do Produto: ")
-    codigo_barras = input("Código de Barras do Produto: ")
-    categoria = input("Categoria do Produto: ")
-    preco_custo = input("Preço de Custo do Produto: ")
-    preco_venda = input("Preço de Venda do Produto: ")
+    codigo_barras = input_somente_numeros("Código de Barras do Produto: ")
+    categoria = escolher_categoria()
+    preco_custo = input_somente_numeros("Preço de Custo do Produto: ")
+    preco_venda = input_somente_numeros("Preço de Venda do Produto: ")
     ncm = input("NCM do Produto (opcional): ")
     cst_icms = input("CST ICMS do Produto (opcional): ")
     cst_pis = input("CST PIS do Produto (opcional): ")
     cst_cofins = input("CST COFINS do Produto (opcional): ")
+    lote = input("Lote do Produto (opcional): ")
 
     # Criando um objeto da classe Produto
-    produto = Produto(nome, descricao, codigo_barras, categoria, preco_custo, preco_venda, ncm, cst_icms, cst_pis, cst_cofins)
+    produto = Produto( nome, descricao, codigo_barras, categoria, preco_custo, preco_venda, ncm, cst_icms, cst_pis, cst_cofins, lote)
 
     conn = connect_db()
     insert_db(conn, produto)
     close_db(conn)
     print(f"Produto '{nome}' cadastrado com sucesso!")
-
 # Função para consultar posição de estoque
 def consultar_posicao_estoque():
     produtos = select_db()
@@ -106,26 +135,36 @@ def adicionar_produtos():
     print("\n--- Adicionar Produtos ao Estoque ---")
     # Implementação futura
 def editar_produto():
-    listar_produtos()
+    consultar_posicao_estoque()  # usando consultar_posicao_estoque em vez de listar_produtos
     produtos = select_db()
     idx = int(input("Escolha o número do produto que deseja editar: "))
     if 0 < idx <= len(produtos):
+        data = produtos[idx-1]
+        produto_antigo = Produto(data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])
+        produto_antigo.id = data[0]  # ajustando o ID
+        
         novo_nome = input("Novo nome do Produto: ")
-        update_db(produtos[idx-1], novo_nome)
+        produto_novo = Produto(novo_nome, data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])
+        produto_novo.id = data[0]  # ajustando o ID
+        
+        update_db(produto_antigo, produto_novo)
         print("Produto atualizado com sucesso!")
     else:
         print("Opção inválida!")
 
 def excluir_produto():
-    listar_produtos()
+    consultar_posicao_estoque()  # usando consultar_posicao_estoque em vez de listar_produtos
     produtos = select_db()
     idx = int(input("Escolha o número do produto que deseja excluir: "))
     if 0 < idx <= len(produtos):
-        delete_db(produtos[idx-1])
+        data = produtos[idx-1]
+        produto_a_excluir = Produto(data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])
+        produto_a_excluir.id = data[0]  # ajustando o ID
+        
+        delete_db(produto_a_excluir)
         print(f"Produto excluído com sucesso!")
     else:
         print("Opção inválida!")
-
 def gerenciar_clientes():
     print("\n--- Gerenciar Clientes ---")
     # Implementação futura

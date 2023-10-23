@@ -1,4 +1,5 @@
-import uuid  # Biblioteca para gerar o id do produto
+# arquivo produto.py
+
 import logging  # Biblioteca para adicionar logs
 
 # Configuração básica do logging
@@ -6,8 +7,15 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 
 class Produto:
-    def __init__(self, nome, descricao, codigo_barras, categoria, preco_compra, preco_venda, ncm=None, cst_icms=None, cst_pis=None, cst_cofins=None):
-        self.id = str(uuid.uuid4())  # Gerando um ID único para o produto
+    _id = 0  # ID inicial
+
+    @classmethod
+    def get_next_id(cls):
+        cls._id += 1
+        return cls._id
+
+    def __init__(self, nome, descricao, codigo_barras, categoria, preco_compra, preco_venda, ncm=None, cst_icms=None, cst_pis=None, cst_cofins=None, lote=None):
+        self.id = Produto.get_next_id()  # Gera um novo ID sequencial
         self.nome = nome
         self.descricao = descricao
         self.codigo_barras = codigo_barras

@@ -1,3 +1,5 @@
+#arquivo database.py
+
 import csv
 import logging  # Biblioteca para adicionar logs
 
@@ -10,10 +12,25 @@ def connect_db():
 def close_db(connection):
     connection.close()
 
+def get_next_id():
+    produtos = select_db()
+    if produtos:
+        last_id = int(produtos[-1][0])
+        return str(last_id + 1)
+    return "1"
+
 def insert_db(connection, produto):
     writer = csv.writer(connection)
+    
+    # Verifique se o arquivo está vazio
+    connection.seek(0)  # Mova o cursor para o início do arquivo
+    if not connection.readline():
+        # Escreva o cabeçalho/título se o arquivo estiver vazio
+        writer.writerow(["ID", "Nome", "Descrição", "Código de Barras", "Categoria", "Preço de Custo", "Preço de Venda", "NCM", "CST ICMS", "CST PIS", "CST COFINS"])
+    
+    prod_id = get_next_id()
+    produto.id = prod_id
     writer.writerow([produto.id, produto.nome, produto.descricao, produto.codigo_barras, produto.categoria, produto.preco_compra, produto.preco_venda, produto.ncm, produto.cst_icms, produto.cst_pis, produto.cst_cofins])
-    logging.info(f"Produto '{produto.nome}' inserido no banco de dados.")
 
 def select_db():
     with open('products.csv', 'r') as file:
