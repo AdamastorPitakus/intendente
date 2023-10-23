@@ -21,6 +21,8 @@ def main():
 
     # Executa o aplicativo
     sys.exit(app.exec_())
+    # Fim da função main
+    
 
 # Executa a função main
 if __name__ == "__main__":
