@@ -1,31 +1,25 @@
+import logging
+import handler as handler
+import tkinter as tk
+from tkinter import messagebox, simpledialog, messagebox, ttk
+from produto import Produto
+import database as db
+import logging
 
-def main_menu():
-    while True:
-        print("\n--- Menu Principal ---")
-        print("1 - Gerenciar Produtos")
-        print("2 - Gerenciar Clientes")
-        print("3 - Gerenciar Fornecedores")
-        print("4 - Gerenciar Vendas")
-        print("5 - Gerenciar Compras")
-        print("0 - Sair")
-        opcao = input("Escolha uma opção: ")
+logging.basicConfig(filename="logs.log", level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
 
-        if opcao == "1":
-            gerenciar_produtos()
-        elif opcao == "2":
-            gerenciar_clientes()
-        elif opcao == "3":
-            gerenciar_fornecedores()
-        elif opcao == "4":ss
-            gerenciar_vendas()
-        elif opcao == "5":
-            gerenciar_compras()
-        elif opcao == "0":
-            logging.info("Saindo do sistema.")
-            break
-        else:
-            logging.warning("Opção inválida!")
 
+class AppProdutos(tk.Frame):
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Menu Interativo de Produtos")
+
+        # Frame para visualização em tempo real
+        self.preview_frame = ttk.LabelFrame(self.root, text="Pré-visualização do Produto")
+        self.preview_frame.pack(pady=20, padx=20, fill="both", expand=True)
+        self.preview_text = tk.StringVar()
+        self.preview_label = ttk.Label(self.preview_frame, textvariable=self.preview_text)
+        self.preview_label.pack(pady=10, padx=10)
 
 
 def gerenciar_produtos():
@@ -58,4 +52,4 @@ def gerenciar_produtos():
 
 
 if __name__ == "__main__":
-    main_menu()
+    gerenciar_produtos()
