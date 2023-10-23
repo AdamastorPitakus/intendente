@@ -1,16 +1,15 @@
-#importa database.py
-import database as db #importa database.py como db
+import database as db  # Importa database.py como db
 from database import connect_db, close_db, insert_db, select_db, update_db, delete_db
+import logging
 
-
-
+# Configuração do logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Lista de produtos para simulação
 produtos = []
 
 def main_menu():
     while True:
-        # Exibe o menu principal
         print("\n--- Menu Principal ---")
         print("1 - Gerenciar Produtos")
         print("2 - Gerenciar Clientes")
@@ -20,7 +19,6 @@ def main_menu():
         print("0 - Sair")
         opcao = input("Escolha uma opção: ")
 
-        # Verifica a opção escolhida
         if opcao == "1":
             gerenciar_produtos()
         elif opcao == "2":
@@ -32,9 +30,14 @@ def main_menu():
         elif opcao == "5":
             gerenciar_compras()
         elif opcao == "0":
+            logging.info("Saindo do sistema.")
             break
         else:
-            print("Opção inválida!")
+            logging.warning("Opção inválida!")
+
+
+if __name__ == "__main__":
+    main_menu()
 
 def gerenciar_produtos():
     while True:
@@ -82,7 +85,7 @@ def cadastrar_produto():
     insert_db(conn, produto)
     close_db(conn)
     print(f"Produto '{nome}' cadastrado com sucesso!")
-    
+
 # Função para consultar posição de estoque
 def consultar_posicao_estoque():
     produtos = select_db()

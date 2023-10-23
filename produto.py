@@ -2,7 +2,8 @@ import uuid  # Biblioteca para gerar o id do produto
 import logging  # Biblioteca para adicionar logs
 
 # Configuração básica do logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 class Produto:
     def __init__(self, nome, descricao, codigo_barras, categoria, preco_compra, preco_venda, ncm=None, cst_icms=None, cst_pis=None, cst_cofins=None):
