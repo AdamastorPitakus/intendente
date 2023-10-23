@@ -1,6 +1,3 @@
-
-    #requirements
-    #PyQt5 install
-    pip install PyQt5
-    pip uuid install
-    
+mysql-connector-python
+PyQt5
+uuid

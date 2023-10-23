@@ -1,27 +1,32 @@
-import mysql.connector 
-import logging 
+import csv
 
-# Configuração do log
-logging.basicConfig(level=logging.INFO)
+def connect_db():
+    return open('products.csv', 'a+', newline='')
 
-# Configuração do banco de dados
-DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Tech#2023",
-    "database": "estoque"
-}
-# Funções de conexão
-def get_connection():
-    try:# Tenta estabelecer uma conexão com o banco de dados
-        conn = mysql.connector.connect(**DB_CONFIG)
-        logging.info("Conexão estabelecida com sucesso!")
-        return conn# Retorna a conexão
-    except mysql.connector.Error as err:
-        logging.error(f"Erro ao conectar: {err}")
-        return None# Retorna None caso ocorra um erro
+def close_db(connection):
+    connection.close()
 
-def close_connection(conn):# Função para fechar a conexão
-    if conn:# Verifica se a conexão existe
-        conn.close()# Fecha a conexão
-        logging.info("Conexão fechada com sucesso!")
+def insert_db(connection, produto):
+    writer = csv.writer(connection)
+    writer.writerow([produto.id, produto.nome, produto.descricao, produto.codigo_barras, produto.categoria, produto.preco_compra, produto.preco_venda, produto.ncm, produto.cst_icms, produto.cst_pis, produto.cst_cofins])
+
+def select_db():
+    with open('products.csv', 'r') as file:
+        reader = csv.reader(file)
+        return list(reader)
+
+def update_db(produto_antigo, produto_novo):
+    produtos = select_db()
+    index = next((index for (index, d) in enumerate(produtos) if d[0] == produto_antigo.id), None)
+    if index is not None:
+        produtos[index] = [produto_novo.id, produto_novo.nome, produto_novo.descricao, produto_novo.codigo_barras, produto_novo.categoria, produto_novo.preco_compra, produto_novo.preco_venda, produto_novo.ncm, produto_novo.cst_icms, produto_novo.cst_pis, produto_novo.cst_cofins]
+        with open('products.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(produtos)
+
+def delete_db(produto):
+    produtos = select_db()
+    produtos = [p for p in produtos if p[0] != produto.id]
+    with open('products.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(produtos)
