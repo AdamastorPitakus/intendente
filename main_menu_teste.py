@@ -64,7 +64,6 @@ def gerenciar_produtos():
 # Adicionando os novos campos no cadastro de produtos
 def cadastrar_produto():
     print("\n--- Cadastrar Produto ---")
-    id = len(select_db())+1
     nome = input("Nome do Produto: ")
     descricao = input("Descrição do Produto: ")
     codigo_barras = input("Código de Barras do Produto: ")
@@ -75,11 +74,15 @@ def cadastrar_produto():
     cst_icms = input("CST ICMS do Produto (opcional): ")
     cst_pis = input("CST PIS do Produto (opcional): ")
     cst_cofins = input("CST COFINS do Produto (opcional): ")
+
+    # Criando um objeto da classe Produto
+    produto = Produto(nome, descricao, codigo_barras, categoria, preco_custo, preco_venda, ncm, cst_icms, cst_pis, cst_cofins)
+
     conn = connect_db()
-    insert_db(conn, (id, nome, descricao, codigo_barras, categoria, preco_custo, preco_venda, ncm, cst_icms, cst_pis, cst_cofins))
+    insert_db(conn, produto)
     close_db(conn)
     print(f"Produto '{nome}' cadastrado com sucesso!")
-
+    
 # Função para consultar posição de estoque
 def consultar_posicao_estoque():
     produtos = select_db()

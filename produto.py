@@ -5,8 +5,8 @@ import logging  # Biblioteca para adicionar logs
 logging.basicConfig(level=logging.INFO)
 
 class Produto:
-    def __init__(self, id, nome, descricao, codigo_barras, categoria, preco_compra, preco_venda, ncm=None, cst_icms=None, cst_pis=None, cst_cofins=None):
-        self.id =
+    def __init__(self, nome, descricao, codigo_barras, categoria, preco_compra, preco_venda, ncm=None, cst_icms=None, cst_pis=None, cst_cofins=None):
+        self.id = str(uuid.uuid4())  # Gerando um ID único para o produto
         self.nome = nome
         self.descricao = descricao
         self.codigo_barras = codigo_barras

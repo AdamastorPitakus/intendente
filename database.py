@@ -1,4 +1,8 @@
 import csv
+import logging  # Biblioteca para adicionar logs
+
+# Configuração básica do logging
+logging.basicConfig(level=logging.INFO)
 
 def connect_db():
     return open('products.csv', 'a+', newline='')
@@ -9,6 +13,7 @@ def close_db(connection):
 def insert_db(connection, produto):
     writer = csv.writer(connection)
     writer.writerow([produto.id, produto.nome, produto.descricao, produto.codigo_barras, produto.categoria, produto.preco_compra, produto.preco_venda, produto.ncm, produto.cst_icms, produto.cst_pis, produto.cst_cofins])
+    logging.info(f"Produto '{produto.nome}' inserido no banco de dados.")
 
 def select_db():
     with open('products.csv', 'r') as file:
@@ -23,6 +28,7 @@ def update_db(produto_antigo, produto_novo):
         with open('products.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(produtos)
+        logging.info(f"Produto '{produto_antigo.nome}' atualizado para '{produto_novo.nome}' no banco de dados.")
 
 def delete_db(produto):
     produtos = select_db()
@@ -30,3 +36,4 @@ def delete_db(produto):
     with open('products.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(produtos)
+    logging.info(f"Produto '{produto.nome}' excluído do banco de dados.")
