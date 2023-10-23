@@ -1,59 +1,37 @@
-import tkinter as tk
-from tkinter import messagebox, simpledialog, ttk
-from produto import Produto
-import database as db
 import logging
-import handler as handler
-from AppProdutos import AppProdutos, gerenciar_produtos
+from AppProdutos import gerenciar_produtos
+from main_menu_teste import main_menu as original_main_menu
+import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedTk
 
 # Configurando arquivo de log
 logging.basicConfig(filename="logs.log", level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
 
-class MainMenu(tk.Frame):
-    def open_gerenciar_produtos(self):#função para abrir o app gerenciar produtos de dentro da classe AppProdutos
-        root = tk.Tk()
-        app = AppProdutos(root)#chama a classe AppProdutos
-        
+def modern_main_menu():
+    # Primeiro, chamamos o menu original
+    root_original = original_main_menu()
 
+    # Criando uma janela com tema moderno
+    root_modern = ThemedTk(theme="arc")
+    root_modern.title("Menu Principal Moderno")
+    root_modern.geometry("400x300")
 
+    # Adicionando um título
+    title = ttk.Label(root_modern, text="Menu Principal Moderno", font=("Arial", 24))
+    title.pack(pady=20)
 
-        root.mainloop()
-        gerenciar_produtos()
-    def __init__(self, root):
-        super().__init__(root)
-        self.root = root
-        self.root.title("Menu PRINCIPAL")
-        self.root.geometry("500x500")
-        self.root.resizable(False, False)
-        self.root.config(bg="white")
-        #self.root.iconbitmap("icons/icon.ico")
+    # Adicionando botões
+    btn_gerenciar_produtos = ttk.Button(root_modern, text="Gerenciar Produtos", command=gerenciar_produtos)
+    btn_gerenciar_produtos.pack(pady=10)
 
-        # Frame para visualização em tempo real
-        self.preview_frame = ttk.LabelFrame(self.root, text="Pré-visualização do Produto")
-        self.preview_frame.pack(pady=20, padx=20, fill="both", expand=True)
-        self.preview_text = tk.StringVar()
-        self.preview_label = ttk.Label(self.preview_frame, textvariable=self.preview_text)
-        self.preview_label.pack(pady=10, padx=10)
+    # Outros botões podem ser adicionados aqui...
 
-        # MENU PRINCIPAL
-        self.main_menu = ttk.LabelFrame(self.root, text="Menu Principal")
-        self.main_menu.pack(pady=20, padx=20, fill="both", expand=True)
+    btn_sair = ttk.Button(root_modern, text="Sair", command=root_modern.quit)
+    btn_sair.pack(pady=10)
 
-      # Botão para gerenciamento de produtos abre o AppProduto.py
-        self.products_button = ttk.Button(self.main_menu, text="Gerenciar Produtos", command=self.open_gerenciar_produtos)
-        self.products_button.pack(pady=20)
-
-class AppProdutos(tk.Frame): #classe AppProdutos
-        def back_to_main_menu(self):
-            self.root.destroy()
-
-def main():
-        root = tk.Tk()
-        app = MainMenu(root)
-        root.mainloop()
-        
+    root_modern.mainloop()
+    root_original.mainloop()
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = MainMenu(root)
-    root.mainloop()
+    modern_main_menu()
