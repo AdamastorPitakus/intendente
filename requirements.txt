@@ -1,3 +1,4 @@
 mysql-connector-python
 PyQt5
 uuid
+sqlite3  # Adicionado para suporte ao SQLite, caso você decida migrar
