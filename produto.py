@@ -1,4 +1,3 @@
-# arquivo produto.py
 import database as db
 import logging
 
@@ -15,8 +14,8 @@ class Produto:
         return cls._id
 
     def __init__(self, nome, descricao, codigo_barras, categoria, preco_compra, preco_venda, quantidade, unidade_de_medida, codigo_item=None, ncm=None):
-        self.id = Produto.get_next_id()  # ID sequencial do sistema
-        self.codigo_item = codigo_item or self.id  # Código do item (pode ser o mesmo das notas de entrada/saída)
+        self.id = Produto.get_next_id()
+        self.codigo_item = codigo_item or self.id
         self.nome = nome
         self.descricao = descricao
         self.codigo_barras = codigo_barras
@@ -25,15 +24,14 @@ class Produto:
         self.preco_venda = preco_venda
         self.quantidade = quantidade
         self.unidade_de_medida = unidade_de_medida
-        self.ncm = ncm  # NCM do produto
+        self.ncm = ncm
+        self.lotes = []
 
-        # Validar os dados do produto
         self._validar()
-
         logging.info(f"Produto '{self.nome}' criado com ID: {self.id} e Código do Item: {self.codigo_item}")
 
     def _validar(self):
-        if not self.nome or not self.descricao or not self.codigo_barras or not self.categoria:
+        if not all([self.nome, self.descricao, self.codigo_barras, self.categoria]):
             logging.error("Todos os campos (nome, descrição, código de barras e categoria) são obrigatórios.")
             raise ValueError("Dados do produto inválidos.")
         if self.preco_compra < 0 or self.preco_venda < 0:
@@ -55,12 +53,9 @@ class Produto:
         self.unidade_de_medida = unidade_de_medida
         self.ncm = ncm or self.ncm
 
-        # Validar os dados do produto
         self._validar()
-
         logging.info(f"Produto '{self.nome}' atualizado com ID: {self.id} e Código do Item: {self.codigo_item}")    
 
-        
     def adicionar_lote(self, lote):
         self.lotes.append(lote)
         logging.info(f"Lote adicionado ao produto '{self.nome}'")
@@ -85,15 +80,15 @@ class Produto:
     def get_all(cls):
         produtos = db.select_db()
         return [cls(*produto[1:]) for produto in produtos[1:]]
+
     @classmethod
     def update(cls, produto_antigo, produto_novo):
         conn = db.connect_db()
         db.update_db(conn, produto_antigo, produto_novo)
         db.close_db(conn)
+
     @classmethod
     def delete(cls, produto):
         conn = db.connect_db()
         db.delete_db(conn, produto)
         db.close_db(conn)
-
-        

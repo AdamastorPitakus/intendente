@@ -1,21 +1,13 @@
-#arquivo mainMenu
-
-
 import logging
 import handler
-from AppProdutos import gerenciar_produtos #importa a função gerenciar_produtos da classe AppProdutos
+from AppProdutos import gerenciar_produtos
 import tkinter as tk
+
 # Configuração do logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# criação do objeto Produto importado da classe Produto na classe construtor, deverá ser imputado
-# os dados do produto para serem cadastrados no banco de dados
-
-
-
 def main_menu():
-    root = tk.Tk()
-    app = MainMenu(root)
+    """Menu principal para gerenciamento de produtos, clientes, fornecedores, vendas e compras."""
     while True:
         print("\n--- Menu Principal ---")
         print("1 - Gerenciar Produtos")
@@ -29,20 +21,26 @@ def main_menu():
         if opcao == "1":
             gerenciar_produtos()
         elif opcao == "2":
-            gerenciar_clientes()
+            # Função gerenciar_clientes ainda não foi definida no código fornecido
+            # gerenciar_clientes()
+            logging.warning("Funcionalidade 'Gerenciar Clientes' ainda não implementada!")
         elif opcao == "3":
-            gerenciar_fornecedores()
+            # Função gerenciar_fornecedores ainda não foi definida no código fornecido
+            # gerenciar_fornecedores()
+            logging.warning("Funcionalidade 'Gerenciar Fornecedores' ainda não implementada!")
         elif opcao == "4":
-            gerenciar_vendas()
+            # Função gerenciar_vendas ainda não foi definida no código fornecido
+            # gerenciar_vendas()
+            logging.warning("Funcionalidade 'Gerenciar Vendas' ainda não implementada!")
         elif opcao == "5":
-            gerenciar_compras()
+            # Função gerenciar_compras ainda não foi definida no código fornecido
+            # gerenciar_compras()
+            logging.warning("Funcionalidade 'Gerenciar Compras' ainda não implementada!")
         elif opcao == "0":
             logging.info("Saindo do sistema.")
             break
         else:
             logging.warning("Opção inválida!")
-
-
 
 if __name__ == "__main__":
     main_menu()
